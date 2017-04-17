@@ -11,7 +11,7 @@ class apache2 {
 
 	file {'/etc/apache2/mods-enabled/userdir.load':
 		ensure => "link",
-		target => "etc/apache2/mods-available/userdir.load",
+		target => "/etc/apache2/mods-available/userdir.load",
 		notify => Service["apache2"],
 		require => Package["apache2"],
 	}
@@ -33,5 +33,25 @@ class apache2 {
 		content => template("apache2/index"),
 		owner => "tommi",
 		group => "tommi",
-	}	
+	}
+
+	file {'/etc/apache2/sites-available/tommi.conf':
+                content => template("apache2/tommiconf"),
+                require => Package["apache2"],
+		owner => "root",
+                group => "root",
+        }
+	
+	file {'/etc/apache2/sites-enabled/tommi.conf':
+		ensure => "link",
+		target => "/etc/apache2/sites-available/tommi.conf",
+		notify => Service["apache2"],
+                require => Package["apache2"],
+	}
+	
+	file {'/etc/apache2/sites-enabled/000-default.conf':
+		ensure => "absent",
+		notify => Service["apache2"],
+		require => Package["apache2"],
+	}
 }

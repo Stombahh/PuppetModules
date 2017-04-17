@@ -1,0 +1,7 @@
+<VirtualHost *:80>
+	DocumentRoot /home/tommi/public_html/
+	
+	<Directory /home/tommi/public_html/>
+		Require all granted
+	</Directory>
+</VirtualHost>
